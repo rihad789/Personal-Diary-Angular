@@ -1,0 +1,40 @@
+<div class="wrapper">
+    <div class="logo"> <img src="./assets/logo.png" alt="">
+    </div>
+    <div class="text-center mt-4 name"> Personal Diary </div>
+    <form [formGroup]="loginForm" (ngSubmit)="checkLogin()" class="p-3">
+
+        <div class="form-field d-flex align-items-center">
+            <input type="email" name="email" id="email" formControlName="email" placeholder="Email" />
+        </div>
+
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback d-flex align-items-center mb-1">
+            <div *ngIf="f['email'].errors['required']">Email is required</div>
+            <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+        </div>
+
+        <div class="form-field d-flex align-items-center">
+            <input type="password" name="password" id="password" placeholder="Password" formControlName="password">
+        </div>
+
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-flex align-items-center mb-1">
+            <div *ngIf="f['password'].errors['required']">Password is required</div>
+            <div *ngIf="f['password'].errors['minlength']">
+                Password must be at least 6 characters
+            </div>
+            <div *ngIf="f['password'].errors['maxlength']">
+                Username must not exceed 40 characters
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <label class="checkbox-wrap checkbox-primary">
+                <input type="checkbox">&nbsp; Remember Me
+            </label>
+        </div>
+
+        <button type="submit" class="btn mt-3">Login</button>
+    </form>
+
+    <div class="text-center">New member.Please<a routerLink="/signup"> Sign up</a> </div>
+</div>

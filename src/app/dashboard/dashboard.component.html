@@ -1,0 +1,123 @@
+<nav class="navbar navbar-light bg-primary">
+    <div class="container-fluid">
+        <h2 class="text-white">Personal Diary App</h2>
+        <div class="d-flex">
+            <button (click)="clickAddDiary()" type="button" class="btn btn-success" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">Add Diary</button>&nbsp;
+            <button (click)="logout()" type="button" class="btn btn-info">Log Out</button>
+        </div>
+    </div>
+</nav>
+
+<div class="mt-4 mx-4">
+    <div class="input-group">
+        <input type="text" #diarySearchKey (keyup)="searchDiary(diarySearchKey.value)" class="form-control"
+            placeholder="Search Diary">
+    </div>
+</div>
+
+<!--Making Table-->
+
+<div class="mt-4 mx-4" style="overflow-x:scroll;overflow-x:scroll">
+
+    <table class="table table-stripped">
+
+        <thead>
+            <tr>
+                <td scope="col">Serial</td>
+                <td scope="col">Title</td>
+                <td scope="col">Recorded Time</td>
+                <td scope="col">Action</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let data of allDiaryData;let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.title}}</td>
+                <td>{{data.created_at}}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="viewDiary(data)" data-bs-toggle="modal"
+                        data-bs-target="#showModel">View</button>&nbsp;
+                    <button class="btn btn-info" (click)="onEditDiary(data)" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Edit</button>&nbsp;
+                    <button class="btn btn-danger" (click)="deleteDiary(data)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+<!--Diary Modal-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Diary Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formValue">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" formControlName="title" class="form-control"
+                            placeholder="Choose a suitable title?" id="title">
+                    </div>
+
+                    <div *ngIf="submitted && f['title'].errors" class="invalid-feedback d-flex align-items-center mb-1">
+                        <div *ngIf="f['title'].errors['required']">Title is required</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="diary" class="form-label">Diary</label>
+                        <textarea type="diary" formControlName="diary" class="form-control"
+                            placeholder="Write down your thoughts/feelings?" id="diary" rows="15"
+                            maxlength="10000"></textarea>
+                    </div>
+
+                    <div *ngIf="submitted && f['diary'].errors" class="invalid-feedback d-flex align-items-center mb-1">
+                        <div *ngIf="f['diary'].errors['required']">Diary text is required</div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="resetForm()">Clear</button>
+                <button type="button" *ngIf="showAdd" class="btn btn-primary" (click)="addDiary()">Add Diary</button>
+                <button type="button" *ngIf="showUpdate" class="btn btn-primary" (click)="updateDiary()">Update
+                    Diary</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--View Diary Modal-->
+
+<div class="modal fade" id="showModel" tabindex="-1" aria-labelledby="showModel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Diary Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="showValue">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" formControlName="title" class="form-control" id="title" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="diary" class="form-label">Diary</label>
+                        <textarea type="diary" formControlName="diary" class="form-control" id="diary" rows="15"
+                            readonly></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
